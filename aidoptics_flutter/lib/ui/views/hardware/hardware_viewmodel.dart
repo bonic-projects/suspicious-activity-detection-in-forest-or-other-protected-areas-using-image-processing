@@ -50,7 +50,7 @@ class HardwareViewModel extends BaseViewModel {
     log.i("Model ready");
 
 
-    _ip = "192.168.29.240";
+    _ip = "192.168.29.224";
     setBusy(false);
 
     _subscription = PerfectVolumeControl.stream.listen((value) {
@@ -123,6 +123,7 @@ class HardwareViewModel extends BaseViewModel {
     Uri uri = Uri(
       scheme: 'http',
       host: ip!,
+      path: 'image'
     );
 
     try {

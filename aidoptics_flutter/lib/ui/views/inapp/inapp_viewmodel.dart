@@ -49,7 +49,7 @@ class InAppViewModel extends BaseViewModel {
     getLabel();
   }
 
-  late Timer _timer;
+  Timer? _timer;
 
   void setTimer() {
     _timer = Timer.periodic(const Duration(seconds: 6), (Timer timer) async {
@@ -68,7 +68,9 @@ class InAppViewModel extends BaseViewModel {
     // call your function here
     _camService.dispose();
     _subscription.cancel();
-    _timer.cancel();
+    if(_timer!=null && _timer!.isActive) {
+      _timer!.cancel();
+    }
     super.dispose();
   }
 
@@ -126,13 +128,13 @@ class InAppViewModel extends BaseViewModel {
     setBusy(false);
 
     String text = _imageProcessingService.processLabels(_labels);
+    await _ttsService.speak(text);
+
     if (text == "Person detected" && _image != null) {
-      await _ttsService.speak(text);
       await Future.delayed(const Duration(milliseconds: 2000));
       return processFace();
     }
 
-    await processFace();
     _image = null;
     await Future.delayed(const Duration(seconds: 1));
     setBusy(false);
