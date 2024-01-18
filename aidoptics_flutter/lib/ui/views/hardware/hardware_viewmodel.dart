@@ -72,6 +72,8 @@ class HardwareViewModel extends BaseViewModel {
 
   void work() async {
     setBusy(true);
+     getImageFromHardware();
+     getImageFromHardware();
     await getImageFromHardware();
     if (_image != null) await getLabel();
   }
