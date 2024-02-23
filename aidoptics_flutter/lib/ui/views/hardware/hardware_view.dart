@@ -44,6 +44,7 @@ class HardwareView extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
+                  ElevatedButton(onPressed: model.getUltrasonicDistanceFromHardware, child: const Text("Get distance")),
                   if (model.isBusy) const CircularProgressIndicator(),
                   if (model.imageSelected != null &&
                       model.imageSelected!.path != "")

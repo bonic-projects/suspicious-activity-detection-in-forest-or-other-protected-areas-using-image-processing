@@ -87,8 +87,8 @@ class HardwareViewModel extends BaseViewModel {
     setBusy(false);
 
     String text = _imageProcessingService.processLabels(_labels);
+    await _ttsService.speak(text);
     if (text == "Person detected") {
-      await _ttsService.speak(text);
       await Future.delayed(const Duration(milliseconds: 2000));
       return processFace();
     }
@@ -149,7 +149,51 @@ class HardwareViewModel extends BaseViewModel {
     }
   }
 
-// void showClientListAndGetIP() async {
+  Future getUltrasonicDistanceFromHardware() async {
+    log.i("Calling..");
+    // _isCalled = true;
+
+    Uri uri = Uri(
+        scheme: 'http',
+        host: ip!,
+        path: 'ultrasonic'
+    );
+
+    try {
+      http.Response response = await http.get(uri);
+      log.i("Status Code: ${response.statusCode}");
+      log.i("Content Length: ${response.contentLength}");
+      // log.i("Content Length: ${response.body}");
+      double distance1 = 0.0;
+      double distance2 = 0.0;
+      bool dataLoaded = false;
+
+      if (response.statusCode == 200) {
+        final data = response.body.split('\n');
+        if (data.length >= 2) {
+          log.i(data);
+          distance1 = double.parse(data[0]);
+          distance2 = double.parse(data[1]);
+          dataLoaded = true;
+        }
+      } else {
+        distance1 = 0.0;
+        distance2 = 0.0;
+        dataLoaded = false;
+      }
+
+      log.i("Distance data: $distance1 $distance2");
+
+
+
+
+
+    } catch (e) {
+      log.e("Error: $e");
+    }
+  }
+
+  // void showClientListAndGetIP() async {
 //   log.i("Get clients");
 //
 //   /// Refresh the list and show in console
