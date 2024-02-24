@@ -149,6 +149,10 @@ class HardwareViewModel extends BaseViewModel {
     }
   }
 
+  double _distanceLeft = 0;
+  double get distanceLeft => _distanceLeft;
+  double _distanceRight = 0;
+  double get distanceRight => _distanceRight;
   Future getUltrasonicDistanceFromHardware() async {
     log.i("Calling..");
     // _isCalled = true;
@@ -175,6 +179,9 @@ class HardwareViewModel extends BaseViewModel {
           distance1 = double.parse(data[0]);
           distance2 = double.parse(data[1]);
           dataLoaded = true;
+          _distanceLeft = distance2;
+          _distanceRight = distance1;
+          notifyListeners();
         }
       } else {
         distance1 = 0.0;
@@ -191,46 +198,32 @@ class HardwareViewModel extends BaseViewModel {
     } catch (e) {
       log.e("Error: $e");
     }
+
+
   }
 
-  // void showClientListAndGetIP() async {
-//   log.i("Get clients");
-//
-//   /// Refresh the list and show in console
-//   _getClientList(false, 300).then((val) => val.forEach((oClient) {
-//         if (oClient.isReachable != null && oClient.isReachable!) {
-//           _ip = oClient.ipAddr;
-//           log.i(_ip);
-//           setBusy(false);
-//           _snackBarService.showCustomSnackBar(
-//               message: "Connected to IP: $_ip",
-//               variant: SnackbarType.success);
-//         } else {
-//           if (_ip == null)
-//             _snackBarService.showCustomSnackBar(
-//                 message: "No devices found", variant: SnackbarType.error);
-//         }
-//         log.i("************************");
-//         log.i("Client :");
-//         log.i("ipAddr = '${oClient.ipAddr}'");
-//         log.i("hwAddr = '${oClient.hwAddr}'");
-//         log.i("device = '${oClient.device}'");
-//         log.i("isReachable = '${oClient.isReachable}'");
-//         log.i("************************");
-//       }));
-// }
-
-// Future<List<APClient>> _getClientList(
-//     bool onlyReachables, int reachableTimeout) async {
-//   List<APClient> htResultClient;
-//
-//   try {
-//     htResultClient = await WiFiForIoTPlugin.getClientList(
-//         onlyReachables, reachableTimeout);
-//   } catch (e) {
-//     htResultClient = <APClient>[];
-//   }
-//
-//   return htResultClient;
-// }
+  bool _isDistanceTimer = false;
+  bool get isDistanceTimer => _isDistanceTimer;
+  bool _isLeftObstacle = false;
+  bool get isLeftObstacle => _isLeftObstacle;
+  bool _isRightObstacle = false;
+  bool get isRightObstacle => _isRightObstacle;
+  void getObstacles() async {
+    // _isDistanceTimer = !_isDistanceTimer;
+    notifyListeners();
+    await getUltrasonicDistanceFromHardware();
+    if(distanceLeft < 50) {
+      await _ttsService.speak("Obstacle from left side");
+      _isLeftObstacle = true;
+    } else {
+      _isLeftObstacle = false;
+    }
+    if(distanceRight < 50) {
+      await _ttsService.speak("Obstacle from right side");
+      _isRightObstacle = true;
+    } else {
+      _isRightObstacle = false;
+    }
+    notifyListeners();
+  }
 }

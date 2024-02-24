@@ -3,6 +3,7 @@ from Wifi import Sta
 import socket as soc
 import camera
 from time import sleep
+from ultrasonic import measure_distance_1, measure_distance_2
 
 esp.osdebug(None)
 
@@ -57,6 +58,15 @@ if con and cam:  # WiFi and camera are ready
                 # Send the image as response
                 cs.sendall(b'HTTP/1.1 200 OK\r\nContent-Type: image/jpeg\r\n\r\n' + camera.capture())
                 cs.close()
+            elif b'GET /ultrasonic' in w:
+                # Measure distances from ultrasonic sensors
+                dist_1 = measure_distance_1()
+                dist_2 = measure_distance_2()
+
+                # Send ultrasonic sensor readings as response
+                response = "{}\n{}".format(dist_1, dist_2)
+                cs.sendall(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n' + response)
+                cs.close()
             else:
                 # Invalid request, close the connection
                 cs.close()
@@ -69,4 +79,5 @@ else:
     print("System not ready. Please restart")
 
 print('System aborted')
+
 

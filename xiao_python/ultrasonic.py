@@ -6,7 +6,7 @@ TRIG_PIN_1 = 1  # D0
 ECHO_PIN_1 = 2  # D1
 
 # Define pin constants for second sensor
-TRIG_PIN_2 = 3  # D2
+TRIG_PIN_2 = 5  # D2
 ECHO_PIN_2 = 4  # D3
 
 # Initialize pins for first sensor
