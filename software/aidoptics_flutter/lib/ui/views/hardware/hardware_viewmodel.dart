@@ -55,7 +55,7 @@ class HardwareViewModel extends BaseViewModel {
     _subscription = PerfectVolumeControl.stream.listen((value) {
       if (_image != null && !isBusy) {
         log.i("Volume button got!");
-        work();
+        workLabel();
       }
     });
   }
@@ -69,14 +69,14 @@ class HardwareViewModel extends BaseViewModel {
     super.dispose();
   }
 
-  void work() async {
+  void workLabel() async {
     setBusy(true);
     await getImageFromHardware();
     await getImageFromHardware();
     await getImageFromHardware();
     if (_image != null) await getLabel();
   }
-
+  // getting labels 
   Future getLabel() async {
     log.i("Getting label");
     _labels = <String>[];
@@ -110,6 +110,48 @@ class HardwareViewModel extends BaseViewModel {
     }
     log.i("Person: $person");
   }
+  //
+
+  
+  //*******Getting Texts*******
+
+  // Future captureImageAndText() async {
+  //   _image = await _camService.takePicture();
+  //   getText();
+  // }
+
+  Future workText() async {
+    setBusy(true);
+    await getImageFromHardware();
+    await getImageFromHardware();
+    await getImageFromHardware();
+    if (_image != null)  getText();
+  }
+
+   String? _text;
+
+  String get text => _text.toString();
+
+  void getText() async {
+    setBusy(true);
+    log.i("Getting Text");
+
+   
+
+    _text = await _imageProcessingService.getTextFromImage(_image!);
+
+    setBusy(false);
+
+    // _image != await _ttsService.speak(_texts);
+
+    if (_image != null) {
+      await _ttsService.speak(_text.toString());
+    } else {
+      await _ttsService.speak('Not Detected');
+    }
+  }
+
+  //********//
 
   Uint8List? _img;
 

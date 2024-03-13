@@ -1,3 +1,4 @@
+import 'package:aidoptics_flutter/ui/common/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -32,12 +33,25 @@ class HardwareView extends StatelessWidget {
             ],
           ),
           floatingActionButton: model.ip != null
-              ? FloatingActionButton(
-                  onPressed: () {
-                    model.work();
-                  },
-                  tooltip: 'camera',
-                  child: Icon(Icons.camera_alt),
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        model.workLabel();
+                      },
+                      tooltip: 'camera',
+                      child: Icon(Icons.camera_alt),
+                    ),
+                    horizontalSpaceSmall,
+                    FloatingActionButton(
+                      onPressed: () {
+                        model.workText();
+                      },
+                      tooltip: 'Text',
+                      child: Icon(Icons.text_fields_rounded),
+                    ),
+                  ],
                 )
               : null,
           body: Center(
