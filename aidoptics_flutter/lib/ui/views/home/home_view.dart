@@ -19,44 +19,40 @@ class HomeView extends StatelessWidget {
         // print(model.node?.lastSeen);
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-                'AidOptics'),
-            actions: [
-
-            ],
+            title: const Text('AidOptics'),
+            actions: [],
           ),
-
           body: Column(
             children: [
               Expanded(
-                child:
-                    Column(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              children: [
-                                Option(
-                                    name: 'In App',
-                                    onTap: model.openInAppView,
-                                    file: 'assets/lottie/inapp.json'),
-                                Option(
-                                    name: 'Hardware',
-                                    onTap: model.openHardwareView,
-                                    file: 'assets/lottie/hardware.json'),
-                                Option(
-                                    name: 'Face Train',
-                                    onTap: model.openFaceTrainView,
-                                    file: 'assets/lottie/face.json'),
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      )
-
-              ),
+                  child: Column(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      children: [
+                        Option(
+                            name: 'In App',
+                            onTap: model.openInAppView,
+                            file: 'assets/lottie/inapp.json'),
+                        Option(
+                            name: 'Hardware',
+                            onTap: model.openHardwareView,
+                            file: 'assets/lottie/hardware.json'),
+                        Option(
+                            name: 'Face Train',
+                            onTap: model.openFaceTrainView,
+                            file: 'assets/lottie/face.json'),
+                        Option(
+                            name: 'Text',
+                            onTap: model.openTextView,
+                            file: 'assets/lottie/inapp.json'),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
             ],
           ),
         );
@@ -208,5 +204,3 @@ class OptionPatient extends StatelessWidget {
     );
   }
 }
-
-

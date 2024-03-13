@@ -2,10 +2,7 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../app/app.logger.dart';
 

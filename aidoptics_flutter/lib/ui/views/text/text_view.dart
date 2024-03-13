@@ -1,26 +1,25 @@
-import 'package:aidoptics_flutter/ui/common/ui_helpers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import 'inapp_viewmodel.dart';
+import 'text_viewmodel.dart';
 
-class InAppView extends StatelessWidget {
-  const InAppView({Key? key}) : super(key: key);
+class TextView extends StatelessWidget {
+  const TextView({Key? key}) : super(key: key);
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<InAppViewModel>.reactive(
+    return ViewModelBuilder<TextViewModel>.reactive(
       onViewModelReady: (model) => model.onModelReady(),
       builder: (context, model, child) {
-        // print(model.node?.lastSeen);
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Smartphone'),
+            title: const Text('Text'),
             actions: [
               IconButton(
                 onPressed: () {
-                  print("icon b");
+                  // print("icon b");
                   model.speak("This is test speech output");
                 },
                 icon: const Icon(Icons.volume_up),
@@ -28,40 +27,25 @@ class InAppView extends StatelessWidget {
             ],
           ),
           floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              horizontalSpaceTiny,
               FloatingActionButton(
                 onPressed: () {
-                  // model.getImageCamera();
+                 // model.getImageCamera();
                   model.captureImageAndText();
                 },
-                tooltip: 'Text',
-                child: Icon(Icons.text_fields_rounded),
+                tooltip: 'camera',
+                child: Icon(Icons.add_a_photo),
                 heroTag: null,
               ),
-              horizontalSpaceMedium,
-              Row(
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      // model.getImageCamera();
-                      model.captureImageAndLabel();
-                    },
-                    tooltip: 'camera',
-                    child: Icon(Icons.add_a_photo),
-                    heroTag: null,
-                  ),
-                  SizedBox(width: 10),
-                  FloatingActionButton(
-                    onPressed: () {
-                      model.getImageGallery();
-                    },
-                    tooltip: 'gallery',
-                    child: Icon(Icons.image),
-                    heroTag: null,
-                  )
-                ],
+              SizedBox(width: 10),
+              FloatingActionButton(
+                onPressed: () {
+                  model.getImageGallery();
+                },
+                tooltip: 'gallery',
+                child: Icon(Icons.image),
+                heroTag: null,
               )
             ],
           ),
@@ -73,11 +57,11 @@ class InAppView extends StatelessWidget {
                         ? Column(
                             children: [
                               Expanded(child: Image.file(model.imageSelected!)),
-                              if (model.labels.isNotEmpty)
+                              if (model.text.isNotEmpty)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    model.labels.toString(),
+                                    model.text.toString(),
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -93,11 +77,11 @@ class InAppView extends StatelessWidget {
                               // ),
                               TextButton(
                                 onPressed: () {
-                                  model.getLabel();
-                                  // print("get label");
+                                  model.getText();
+                                  // print("get Text");
                                 },
                                 child: const Text(
-                                  "Get label",
+                                  "Get Text",
                                 ),
                               ),
                             ],
@@ -109,7 +93,7 @@ class InAppView extends StatelessWidget {
                 ),
         );
       },
-      viewModelBuilder: () => InAppViewModel(),
+      viewModelBuilder: () => TextViewModel(),
     );
   }
 }

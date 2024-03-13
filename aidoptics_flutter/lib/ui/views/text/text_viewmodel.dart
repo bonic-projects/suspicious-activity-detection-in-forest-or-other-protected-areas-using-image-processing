@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aidoptics_flutter/app/app.locator.dart';
+import 'package:aidoptics_flutter/app/app.logger.dart';
+import 'package:aidoptics_flutter/services/camera_service.dart';
+import 'package:aidoptics_flutter/services/imageprocessing_service.dart';
+import 'package:aidoptics_flutter/services/regula_service.dart';
+import 'package:aidoptics_flutter/services/tts_service.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../../../app/app.locator.dart';
-import '../../../app/app.logger.dart';
-import '../../../services/camera_service.dart';
-import '../../../services/imageprocessing_service.dart';
-import '../../../services/regula_service.dart';
-import '../../../services/tts_service.dart';
-
-class InAppViewModel extends BaseViewModel {
+class TextViewModel extends BaseViewModel {
   final log = getLogger('InAppViewModel');
 
   final _snackBarService = locator<SnackbarService>();
@@ -22,7 +21,7 @@ class InAppViewModel extends BaseViewModel {
   final TTSService _ttsService = locator<TTSService>();
   final ImageProcessingService _imageProcessingService =
       locator<ImageProcessingService>();
-  final _ragulaService = locator<RegulaService>();
+  //final _ragulaService = locator<RegulaService>();
   final _camService = locator<CameraService>();
 
   CameraController get controller => _camService.controller;
@@ -31,11 +30,11 @@ class InAppViewModel extends BaseViewModel {
   void onModelReady() async {
     _subscription = PerfectVolumeControl.stream.listen((value) {
       if (_image == null && !isBusy) {
-        captureImageAndLabel();
+        captureImageAndText();
       }
       if (_image != null && !isBusy) {
         log.i("Volume button got!");
-        getLabel();
+        getText();
       }
     });
     setBusy(true);
@@ -44,9 +43,9 @@ class InAppViewModel extends BaseViewModel {
     // setTimer();//todo
   }
 
-  Future captureImageAndLabel() async {
+  Future captureImageAndText() async {
     _image = await _camService.takePicture();
-    getLabel();
+    getText();
   }
 
   Timer? _timer;
@@ -55,10 +54,10 @@ class InAppViewModel extends BaseViewModel {
     _timer = Timer.periodic(const Duration(seconds: 6), (Timer timer) async {
       log.i("Timer got!");
       if (_image == null && !isBusy) {
-        captureImageAndLabel();
+        captureImageAndText();
       }
       if (_image != null && !isBusy) {
-        getLabel();
+        getText();
       }
     });
   }
@@ -78,9 +77,7 @@ class InAppViewModel extends BaseViewModel {
   XFile? _imageFile;
   File? _image;
 
-  File? get imageSelected => _image;
-
-  // InputImage? _inputImage;
+   File? get imageSelected => _image;
 
   getImageCamera() async {
     setBusy(true);
@@ -110,64 +107,7 @@ class InAppViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  List<String> _labels = <String>[];
-
-  List<String> get labels => _labels;
-
-  void getLabel() async {
-    setBusy(true);
-
-    // _storageService.uploadFile(_image!, "log/users/${_authService.currentUser!.uid}/log.png");
-
-    log.i("Getting label");
-
-    _labels = <String>[];
-
-    _labels = await _imageProcessingService.getLabelFromImage(_image!);
-
-    setBusy(false);
-
-    String text = _imageProcessingService.processLabels(_labels);
-    await _ttsService.speak(text);
-
-    if (text == "Person detected" && _image != null) {
-      await Future.delayed(const Duration(milliseconds: 2000));
-      return processFace();
-    }
-
-    _image = null;
-    await Future.delayed(const Duration(seconds: 1));
-    setBusy(false);
-  }
-
-  Future processFace() async {
-    _ttsService.speak("Identifying person");
-    setBusy(true);
-    String? person = await _ragulaService.checkMatch(_image!.path);
-    setBusy(false);
-    if (person != null) {
-      _labels.clear();
-      _labels.add(person);
-      notifyListeners();
-      await _ttsService.speak(person);
-      await Future.delayed(const Duration(milliseconds: 1500));
-    } else {
-      await _ttsService.speak("Not identified!");
-      await Future.delayed(const Duration(milliseconds: 1500));
-    }
-    log.i("Person: $person");
-  }
-
-  Future speak(String text) async {
-    _ttsService.speak(text);
-  }
-
-   Future captureImageAndText() async {
-    _image = await _camService.takePicture();
-    getText();
-  }
-
-   String? _text;
+  String? _text;
 
   String get text => _text.toString();
 
@@ -188,5 +128,9 @@ class InAppViewModel extends BaseViewModel {
     } else {
       await _ttsService.speak('Not Detected');
     }
+  }
+
+  Future speak(String text) async {
+    _ttsService.speak(text);
   }
 }

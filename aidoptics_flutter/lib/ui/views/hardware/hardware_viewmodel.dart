@@ -49,7 +49,6 @@ class HardwareViewModel extends BaseViewModel {
     setBusy(true);
     log.i("Model ready");
 
-
     _ip = "192.168.29.224";
     setBusy(false);
 
@@ -82,7 +81,7 @@ class HardwareViewModel extends BaseViewModel {
     log.i("Getting label");
     _labels = <String>[];
 
-    _labels = await _imageProcessingService.getTextFromImage(_image!);
+    _labels = await _imageProcessingService.getLabelFromImage(_image!);
 
     setBusy(false);
 
@@ -122,11 +121,7 @@ class HardwareViewModel extends BaseViewModel {
     log.i("Calling..");
     // _isCalled = true;
 
-    Uri uri = Uri(
-      scheme: 'http',
-      host: ip!,
-      path: 'image'
-    );
+    Uri uri = Uri(scheme: 'http', host: ip!, path: 'image');
 
     try {
       http.Response response = await http.get(uri);
@@ -157,11 +152,7 @@ class HardwareViewModel extends BaseViewModel {
     log.i("Calling..");
     // _isCalled = true;
 
-    Uri uri = Uri(
-        scheme: 'http',
-        host: ip!,
-        path: 'ultrasonic'
-    );
+    Uri uri = Uri(scheme: 'http', host: ip!, path: 'ultrasonic');
 
     try {
       http.Response response = await http.get(uri);
@@ -190,16 +181,9 @@ class HardwareViewModel extends BaseViewModel {
       }
 
       log.i("Distance data: $distance1 $distance2");
-
-
-
-
-
     } catch (e) {
       log.e("Error: $e");
     }
-
-
   }
 
   bool _isDistanceTimer = false;
@@ -212,13 +196,13 @@ class HardwareViewModel extends BaseViewModel {
     // _isDistanceTimer = !_isDistanceTimer;
     notifyListeners();
     await getUltrasonicDistanceFromHardware();
-    if(distanceLeft < 50) {
+    if (distanceLeft < 50) {
       await _ttsService.speak("Obstacle from left side");
       _isLeftObstacle = true;
     } else {
       _isLeftObstacle = false;
     }
-    if(distanceRight < 50) {
+    if (distanceRight < 50) {
       await _ttsService.speak("Obstacle from right side");
       _isRightObstacle = true;
     } else {

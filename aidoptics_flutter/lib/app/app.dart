@@ -12,6 +12,7 @@ import '../ui/views/hardware/hardware_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/inapp/inapp_view.dart';
 import '../ui/views/startup/startup_view.dart';
+import 'package:aidoptics_flutter/ui/views/text/text_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -21,6 +22,7 @@ import '../ui/views/startup/startup_view.dart';
     MaterialRoute(page: InAppView),
     MaterialRoute(page: FaceRecView),
     MaterialRoute(page: HardwareView),
+    MaterialRoute(page: TextView),
 // @stacked-route
   ],
   dependencies: [

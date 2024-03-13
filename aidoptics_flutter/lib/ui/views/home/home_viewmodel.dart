@@ -19,14 +19,12 @@ class HomeViewModel extends BaseViewModel {
   final _bottomSheetService = locator<BottomSheetService>();
   final TTSService _ttsService = locator<TTSService>();
 
-
   late Timer _reminderTimer;
 
   void onModelRdy() async {
     log.i("started");
     setBusy(true);
   }
-
 
   void openInAppView() {
     _navigationService.navigateTo(Routes.inAppView);
@@ -39,10 +37,9 @@ class HomeViewModel extends BaseViewModel {
   void openFaceTrainView() {
     _navigationService.navigateTo(Routes.faceRecView);
   }
-
-
-
-
+  void openTextView() {
+    _navigationService.navigateTo(Routes.textView);
+  }
 
   void showBottomSheetUserSearch() async {
     final result = await _bottomSheetService.showCustomSheet(
@@ -59,9 +56,4 @@ class HomeViewModel extends BaseViewModel {
       // _bottomSheetService.
     }
   }
-
-
-
-
-
 }
