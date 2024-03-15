@@ -47,7 +47,7 @@ class HomeView extends StatelessWidget {
                         Option(
                             name: 'Text',
                             onTap: model.openTextView,
-                            file: 'assets/lottie/inapp.json'),
+                            file: 'assets/lottie/text.json'),
                       ],
                     ),
                   ),
