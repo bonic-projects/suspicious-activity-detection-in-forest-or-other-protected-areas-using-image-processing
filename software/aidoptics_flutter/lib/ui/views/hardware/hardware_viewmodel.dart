@@ -76,6 +76,14 @@ class HardwareViewModel extends BaseViewModel {
     await getImageFromHardware();
     if (_image != null) await getLabel();
   }
+
+
+  void setIp(String ipIn){
+    _ip = ipIn;
+    notifyListeners();
+  }
+
+  
   // getting labels 
   Future getLabel() async {
     log.i("Getting label");

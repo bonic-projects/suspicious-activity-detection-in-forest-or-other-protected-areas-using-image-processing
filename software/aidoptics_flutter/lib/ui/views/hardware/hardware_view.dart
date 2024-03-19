@@ -1,4 +1,5 @@
 import 'package:aidoptics_flutter/ui/common/ui_helpers.dart';
+import 'package:aidoptics_flutter/widgets/ip.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -55,69 +56,78 @@ class HardwareView extends StatelessWidget {
                 )
               : null,
           body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("DL : ${model.distanceLeft} cm"),
-                      ElevatedButton(
-                          onPressed: model.getUltrasonicDistanceFromHardware,
-                          child: const Text("Get distance")),
-                      Text("DR: ${model.distanceRight} cm"),
-                    ],
-                  ),
-                  // if(model.isDistanceTimer)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      if (model.isLeftObstacle)
-                        const Text("Obstacle from left"),
-                      ElevatedButton(
-                          onPressed: model.getObstacles,
-                          child: const Text("Get obstacle data")),
-                      if (model.isRightObstacle)
-                        const Text("Obstacle from right"),
-                    ],
-                  ),
-                  if (model.isBusy)
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
+            child: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    IpAddressInputWidget(
+                      onSetIp: model.setIp,
+                      initialIp: model.ip,
                     ),
-                  if (model.imageSelected != null &&
-                      model.imageSelected!.path != "")
-                    Expanded(
-                      child: RotatedBox(
-                        quarterTurns: 1,
-                        child: Image.memory(model.img!
-                            // model.imageSelected!.readAsBytesSync(),
-                            ),
+                    verticalSpaceMassive,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("DL : ${model.distanceLeft} cm"),
+                        ElevatedButton(
+                            onPressed: model.getUltrasonicDistanceFromHardware,
+                            child: const Text("Get distance")),
+                        Text("DR: ${model.distanceRight} cm"),
+                      ],
+                    ),
+                    verticalSpaceMassive,
+                    // if(model.isDistanceTimer)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        if (model.isLeftObstacle)
+                          const Text("Obstacle from left"),
+                        ElevatedButton(
+                            onPressed: model.getObstacles,
+                            child: const Text("Get obstacle data")),
+                        if (model.isRightObstacle)
+                          const Text("Obstacle from right"),
+                      ],
+                    ),
+                    //verticalSpaceLarge,
+                    if (model.isBusy)
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
                       ),
-                    ),
-                  if (model.labels.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: Text(
-                        model.labels.toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                    if (model.imageSelected != null &&
+                        model.imageSelected!.path != "")
+                      Expanded(
+                        child: RotatedBox(
+                          quarterTurns: 1,
+                          child: Image.memory(model.img!
+                              // model.imageSelected!.readAsBytesSync(),
+                              ),
                         ),
                       ),
-                    ),
-                  // TextButton(
-                  //   onPressed: () async {
-                  //     await model.getImageFromHardware();
-                  //     model.getLabel();
-                  //     print("get label");
-                  //   },
-                  //   child: Text(
-                  //     "Get label",
-                  //   ),
-                  // ),
-                ]),
+                    if (model.labels.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Text(
+                          model.labels.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    // TextButton(
+                    //   onPressed: () async {
+                    //     await model.getImageFromHardware();
+                    //     model.getLabel();
+                    //     print("get label");
+                    //   },
+                    //   child: Text(
+                    //     "Get label",
+                    //   ),
+                    // ),
+                  ]),
+            ),
           ),
         );
       },
