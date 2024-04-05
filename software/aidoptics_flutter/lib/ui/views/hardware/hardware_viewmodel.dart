@@ -80,6 +80,7 @@ class HardwareViewModel extends BaseViewModel {
 
   void setIp(String ipIn){
     _ip = ipIn;
+    log.i("set Ip called $ipIn");
     notifyListeners();
   }
 

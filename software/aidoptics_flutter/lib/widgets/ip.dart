@@ -50,12 +50,12 @@ class _IpAddressInputWidgetState extends State<IpAddressInputWidget> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              if (Form.of(context).validate()) {
+            //  if (Form.of(context).validate()) {
                 // Validation passed, return the entered IP address
                 String ipAddress = _ipController.text;
                 // Callback to the parent widget with the valid IP address
                 widget.onSetIp?.call(ipAddress);
-              }
+            //  }
             },
             child: const Text('Set IP'),
           ),
