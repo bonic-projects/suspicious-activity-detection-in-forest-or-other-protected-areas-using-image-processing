@@ -48,6 +48,14 @@ class HomeView extends StatelessWidget {
                             name: 'Text',
                             onTap: model.openTextView,
                             file: 'assets/lottie/text.json'),
+                        Option(
+                            name: 'Pose',
+                            onTap: model.openTextView,
+                            file: 'assets/lottie/pose.json'),
+                        Option(
+                            name: 'TensorFlow',
+                            onTap: model.openTextView,
+                            file: 'assets/lottie/tensorflow.json'),
                       ],
                     ),
                   ),
