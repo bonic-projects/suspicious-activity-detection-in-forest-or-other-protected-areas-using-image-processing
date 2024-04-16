@@ -85,34 +85,6 @@ class HardwareView extends StatelessWidget {
                                   initialIp: model.ip,
                                 ),
                               verticalSpaceMassive,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text("DL : ${model.distanceLeft} cm"),
-                                  ElevatedButton(
-                                      onPressed: model
-                                          .getUltrasonicDistanceFromHardware,
-                                      child: const Text("Get distance")),
-                                  Text("DR: ${model.distanceRight} cm"),
-                                ],
-                              ),
-                              verticalSpaceMassive,
-                              // if(model.isDistanceTimer)
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  if (model.isLeftObstacle)
-                                    const Text("Obstacle from left"),
-                                  ElevatedButton(
-                                      onPressed: model.getObstacles,
-                                      child: const Text("Get obstacle data")),
-                                  if (model.isRightObstacle)
-                                    const Text("Obstacle from right"),
-                                ],
-                              ),
-                              //verticalSpaceLarge,
                               if (model.isBusy)
                                 const Padding(
                                   padding: EdgeInsets.all(24.0),

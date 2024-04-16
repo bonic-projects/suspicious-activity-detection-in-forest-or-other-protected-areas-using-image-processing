@@ -49,7 +49,7 @@ class HardwareViewModel extends BaseViewModel {
     setBusy(true);
     log.i("Model ready");
 
-    _ip = "192.168.29.224";
+    _ip = "192.168.29.137";
     setBusy(false);
 
     _subscription = PerfectVolumeControl.stream.listen((value) {
@@ -72,8 +72,8 @@ class HardwareViewModel extends BaseViewModel {
   void workLabel() async {
     setBusy(true);
     await getImageFromHardware();
-    await getImageFromHardware();
-    await getImageFromHardware();
+    // await getImageFromHardware();
+    // await getImageFromHardware();
     if (_image != null) await getLabel();
   }
 
@@ -132,8 +132,8 @@ class HardwareViewModel extends BaseViewModel {
   Future workText() async {
     setBusy(true);
     await getImageFromHardware();
-    await getImageFromHardware();
-    await getImageFromHardware();
+    // await getImageFromHardware();
+    // await getImageFromHardware();
     if (_image != null)  getText();
   }
 
@@ -172,7 +172,7 @@ class HardwareViewModel extends BaseViewModel {
     log.i("Calling..");
     // _isCalled = true;
 
-    Uri uri = Uri(scheme: 'http', host: ip!, path: 'image');
+    Uri uri = Uri(scheme: 'http', host: ip!, path: 'snapshot');
 
     try {
       http.Response response = await http.get(uri);
@@ -195,70 +195,4 @@ class HardwareViewModel extends BaseViewModel {
     }
   }
 
-  double _distanceLeft = 0;
-  double get distanceLeft => _distanceLeft;
-  double _distanceRight = 0;
-  double get distanceRight => _distanceRight;
-  Future getUltrasonicDistanceFromHardware() async {
-    log.i("Calling..");
-    // _isCalled = true;
-
-    Uri uri = Uri(scheme: 'http', host: ip!, path: 'ultrasonic');
-
-    try {
-      http.Response response = await http.get(uri);
-      log.i("Status Code: ${response.statusCode}");
-      log.i("Content Length: ${response.contentLength}");
-      // log.i("Content Length: ${response.body}");
-      double distance1 = 0.0;
-      double distance2 = 0.0;
-      bool dataLoaded = false;
-
-      if (response.statusCode == 200) {
-        final data = response.body.split('\n');
-        if (data.length >= 2) {
-          log.i(data);
-          distance1 = double.parse(data[0]);
-          distance2 = double.parse(data[1]);
-          dataLoaded = true;
-          _distanceLeft = distance2;
-          _distanceRight = distance1;
-          notifyListeners();
-        }
-      } else {
-        distance1 = 0.0;
-        distance2 = 0.0;
-        dataLoaded = false;
-      }
-
-      log.i("Distance data: $distance1 $distance2");
-    } catch (e) {
-      log.e("Error: $e");
-    }
-  }
-
-  bool _isDistanceTimer = false;
-  bool get isDistanceTimer => _isDistanceTimer;
-  bool _isLeftObstacle = false;
-  bool get isLeftObstacle => _isLeftObstacle;
-  bool _isRightObstacle = false;
-  bool get isRightObstacle => _isRightObstacle;
-  void getObstacles() async {
-    // _isDistanceTimer = !_isDistanceTimer;
-    notifyListeners();
-    await getUltrasonicDistanceFromHardware();
-    if (distanceLeft < 50) {
-      await _ttsService.speak("Obstacle from left side");
-      _isLeftObstacle = true;
-    } else {
-      _isLeftObstacle = false;
-    }
-    if (distanceRight < 50) {
-      await _ttsService.speak("Obstacle from right side");
-      _isRightObstacle = true;
-    } else {
-      _isRightObstacle = false;
-    }
-    notifyListeners();
-  }
 }
