@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:forest_guard/ui/common/ui_helpers.dart';
 import 'package:forest_guard/widgets/ip.dart';

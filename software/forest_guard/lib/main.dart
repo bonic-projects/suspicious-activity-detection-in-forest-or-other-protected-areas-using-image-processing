@@ -4,7 +4,6 @@ import 'package:forest_guard/app/app.dialogs.dart';
 import 'package:forest_guard/app/app.locator.dart';
 import 'package:forest_guard/app/app.router.dart';
 
-
 import 'package:stacked_services/stacked_services.dart';
 
 Future<void> main() async {

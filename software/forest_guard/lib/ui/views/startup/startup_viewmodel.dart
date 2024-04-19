@@ -1,4 +1,3 @@
-
 import 'package:forest_guard/app/app.locator.dart';
 import 'package:forest_guard/app/app.router.dart';
 import 'package:forest_guard/services/regula_service.dart';

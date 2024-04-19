@@ -1,8 +1,8 @@
 import 'dart:io';
 
-
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart';
 
 import '../app/app.logger.dart';
 
@@ -58,7 +58,7 @@ class ImageProcessingService {
     if (res) {
       return "Person detected";
     } else {
-      if (labeles.contains("Dog")) labeles.remove("Dog");
+      if (labeles.contains("Dog")) return "Dog";
       if (labeles.contains("Musical instrument")) {
         labeles.remove("Musical instrument");
       }
@@ -104,12 +104,42 @@ class ImageProcessingService {
       script: TextRecognitionScript.latin,
     );
     final inputImage = InputImage.fromFilePath(image.path);
-    
+
     final RecognizedText recognizedText =
         (await textRecognizer.processImage(inputImage)) as RecognizedText;
     String text = recognizedText.text;
     textRecognizer.close();
     return text;
+  }
+
+  InputImage getInputImage(File image){
+    return InputImage.fromFilePath(image.path);
+  }
+
+  Future<List<Pose>> getPoseFromImage(File image) async {
+    log.i("Getting label");
+    List<Pose> poses = <Pose>[];
+
+    final inputImage = InputImage.fromFilePath(image.path);
+    final options = PoseDetectorOptions(mode: PoseDetectionMode.single);
+    final poseDetector = PoseDetector(options: options);
+    poses = await poseDetector.processImage(inputImage);
+
+    for (Pose pose in poses) {
+      // to access all landmarks
+      pose.landmarks.forEach((_, landmark) {
+        final type = landmark.type;
+        final x = landmark.x;
+        final y = landmark.y;
+        log.i(type);
+      });
+
+      // to access specific landmarks
+      final landmark = pose.landmarks[PoseLandmarkType.nose];
+      log.i(landmark);
+    }
+
+    return poses;
   }
 }
 

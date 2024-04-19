@@ -15,6 +15,8 @@ import '../ui/views/home/home_view.dart';
 import '../ui/views/inapp/inapp_view.dart';
 import '../ui/views/startup/startup_view.dart';
 
+import 'package:forest_guard/ui/views/pose/pose_view.dart';
+import 'package:forest_guard/ui/views/tensorflow/tensorflow_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -25,6 +27,8 @@ import '../ui/views/startup/startup_view.dart';
     MaterialRoute(page: FaceRecView),
     MaterialRoute(page: HardwareView),
     MaterialRoute(page: TextView),
+    MaterialRoute(page: PoseView),
+    MaterialRoute(page: TensorflowView),
 // @stacked-route
   ],
   dependencies: [

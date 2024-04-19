@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:camera/camera.dart';
 import 'package:forest_guard/app/app.locator.dart';
 import 'package:forest_guard/app/app.logger.dart';
@@ -78,7 +77,7 @@ class TextViewModel extends BaseViewModel {
   XFile? _imageFile;
   File? _image;
 
-   File? get imageSelected => _image;
+  File? get imageSelected => _image;
 
   getImageCamera() async {
     setBusy(true);
@@ -115,8 +114,6 @@ class TextViewModel extends BaseViewModel {
   void getText() async {
     setBusy(true);
     log.i("Getting Text");
-
-   
 
     _text = await _imageProcessingService.getTextFromImage(_image!);
 

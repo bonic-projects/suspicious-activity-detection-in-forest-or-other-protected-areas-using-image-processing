@@ -31,7 +31,7 @@ class TextView extends StatelessWidget {
             children: [
               FloatingActionButton(
                 onPressed: () {
-                 // model.getImageCamera();
+                  // model.getImageCamera();
                   model.captureImageAndText();
                 },
                 tooltip: 'camera',

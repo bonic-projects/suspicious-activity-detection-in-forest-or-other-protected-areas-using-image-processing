@@ -162,20 +162,18 @@ class InAppViewModel extends BaseViewModel {
     _ttsService.speak(text);
   }
 
-   Future captureImageAndText() async {
+  Future captureImageAndText() async {
     _image = await _camService.takePicture();
     getText();
   }
 
-   String? _text;
+  String? _text;
 
   String get text => _text.toString();
 
   void getText() async {
     setBusy(true);
     log.i("Getting Text");
-
-   
 
     _text = await _imageProcessingService.getTextFromImage(_image!);
 

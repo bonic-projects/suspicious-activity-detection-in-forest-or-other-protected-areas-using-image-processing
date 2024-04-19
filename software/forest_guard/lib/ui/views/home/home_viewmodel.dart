@@ -37,8 +37,15 @@ class HomeViewModel extends BaseViewModel {
   void openFaceTrainView() {
     _navigationService.navigateTo(Routes.faceRecView);
   }
+
   void openTextView() {
     _navigationService.navigateTo(Routes.textView);
+  }
+  void openPoseView() {
+    _navigationService.navigateTo(Routes.poseView);
+  }
+  void openTensorFlowView() {
+    _navigationService.navigateTo(Routes.tensorflowView);
   }
 
   void showBottomSheetUserSearch() async {

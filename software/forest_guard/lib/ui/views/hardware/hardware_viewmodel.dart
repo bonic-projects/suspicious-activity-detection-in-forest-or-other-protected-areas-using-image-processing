@@ -77,15 +77,13 @@ class HardwareViewModel extends BaseViewModel {
     if (_image != null) await getLabel();
   }
 
-
-  void setIp(String ipIn){
+  void setIp(String ipIn) {
     _ip = ipIn;
     log.i("set Ip called $ipIn");
     notifyListeners();
   }
 
-  
-  // getting labels 
+  // getting labels
   Future getLabel() async {
     log.i("Getting label");
     _labels = <String>[];
@@ -99,6 +97,10 @@ class HardwareViewModel extends BaseViewModel {
     if (text == "Person detected") {
       await Future.delayed(const Duration(milliseconds: 2000));
       return processFace();
+    } else  if (text == "Dog") {
+      await Future.delayed(const Duration(milliseconds: 1000));
+      await _ttsService.speak("Hunters may be present");
+      return;
     }
   }
 
@@ -121,7 +123,6 @@ class HardwareViewModel extends BaseViewModel {
   }
   //
 
-  
   //*******Getting Texts*******
 
   // Future captureImageAndText() async {
@@ -134,18 +135,16 @@ class HardwareViewModel extends BaseViewModel {
     await getImageFromHardware();
     // await getImageFromHardware();
     // await getImageFromHardware();
-    if (_image != null)  getText();
+    if (_image != null) getText();
   }
 
-   String? _text;
+  String? _text;
 
   String get text => _text.toString();
 
   void getText() async {
     setBusy(true);
     log.i("Getting Text");
-
-   
 
     _text = await _imageProcessingService.getTextFromImage(_image!);
 
@@ -194,5 +193,4 @@ class HardwareViewModel extends BaseViewModel {
       log.i("Error: $e");
     }
   }
-
 }
